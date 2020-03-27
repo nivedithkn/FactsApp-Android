@@ -1,0 +1,132 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+final String API_BASE_URL = "API_BASE_URL"
+
+/* App name */
+final String APP_TITLE = "APPLICATION_TITLE"
+
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.niv.factsapp"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+
+        qa {
+
+            resValue "string", APP_TITLE, "Facts (QA)"
+
+            String domain_api = "https://dl.dropboxusercontent.com"
+
+            buildConfigField "String", API_BASE_URL, "\"$domain_api\""
+
+        }
+
+        production {
+
+            resValue "string", APP_TITLE, "Facts"
+
+            String domain_api = "https://dl.dropboxusercontent.com"
+
+            buildConfigField "String", API_BASE_URL, "\"$domain_api\""
+
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def project = "factsapp"
+            def SEP = "-"
+            def flavor = variant.productFlavors[0].name
+            def buildType = variant.variantData.variantConfiguration.buildType.name
+            def version = variant.versionName
+            def date = new Date()
+            def formattedDate = date.format('yyyyMMdd_HHmm')
+
+            def newApkName = project + SEP + flavor + SEP + buildType + SEP + version + SEP + formattedDate + ".apk"
+
+            outputFileName = new File(newApkName)
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+dependencies {
+
+    def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
+    def retrofit_version = "2.5.0"
+    def gson_converter_version = "2.5.0"
+    def gson_version = "2.8.5"
+    def coroutines_core_version = "1.1.1"
+    def coroutines_versrion = "1.0.0"
+    def glide_version = "4.11.0"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+    // Annotation processor
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    implementation "androidx.lifecycle:lifecycle-process:$lifecycle_version"
+
+    // optional - Test helpers for LiveData
+    testImplementation "androidx.arch.core:core-testing:$arch_version"
+
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$gson_converter_version"
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    // Coroutines from KotlinX
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_core_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_versrion"
+
+    //IMAGING
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+}
