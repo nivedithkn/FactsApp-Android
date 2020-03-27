@@ -1,6 +1,7 @@
 package com.niv.factsapp
 
 import android.app.Application
+import com.niv.factsapp.preferences.PreferenceHelper
 
 class FactsApplication : Application() {
 
@@ -13,7 +14,9 @@ class FactsApplication : Application() {
         super.onCreate()
 
         instance = this@FactsApplication
-    }
 
+        PreferenceHelper.initWith(this)
+
+    }
 
 }

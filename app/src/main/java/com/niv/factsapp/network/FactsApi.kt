@@ -5,10 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.stream.MalformedJsonException
 import com.niv.factsapp.BuildConfig
-import com.niv.factsapp.models.ApiResult
-import com.niv.factsapp.models.Failure
-import com.niv.factsapp.models.SimpleResponse
-import com.niv.factsapp.models.Success
+import com.niv.factsapp.models.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -45,6 +42,12 @@ object FactsApi {
     var errorHandler: ((errorCode: Int) -> Unit)? = null
 
     var connectionChecker: (() -> Boolean)? = null
+
+    /**
+     * Method to get the facts listing api called
+     */
+    fun getFactsListing(): ApiResult<ListingResponse> =
+        retrofit.getFactsListing().callWithExceptionHandling()
 
 
     /**
