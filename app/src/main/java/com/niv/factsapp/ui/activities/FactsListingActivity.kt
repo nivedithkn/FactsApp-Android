@@ -47,6 +47,20 @@ class FactsListingActivity : AppCompatActivity() {
         factsListingViewModel.loadPage().observeList()
 
         binding.viewmodel = factsListingViewModel
+
+        setUiListeners()
+    }
+
+    /**
+     * Method to set the ui listerners
+     */
+    private fun setUiListeners() {
+
+        // siwpe listener for swipe refresh layout
+        layout_swipe.setOnRefreshListener {
+            layout_swipe.isRefreshing = true
+            factsListingViewModel.loadPage().observeList()
+        }
     }
 
     /**
