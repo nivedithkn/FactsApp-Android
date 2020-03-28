@@ -1,5 +1,7 @@
 package com.niv.factsapp.models
 
+import androidx.databinding.BaseObservable
+
 /**
  * FactsListItem - Data class for fact item
  *
@@ -10,4 +12,4 @@ data class FactsListItem(
     val title: String?,
     val description: String?,
     val imageHref: String?
-)
+): BaseObservable()

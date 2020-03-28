@@ -1,9 +1,12 @@
 package com.niv.factsapp.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.niv.factsapp.models.FactsListItem
 import com.niv.factsapp.models.Failure
+import com.niv.factsapp.models.ListingResponse
 import com.niv.factsapp.models.Success
 import com.niv.factsapp.network.FactsApi
+import kotlinx.coroutines.Job
 
 /**
  * FactsListRepo
@@ -14,12 +17,24 @@ import com.niv.factsapp.network.FactsApi
 
 object RepoFactsListing {
 
+    private var job = Job()
+
     private val items: ArrayList<FactsListItem> = ArrayList()
+    private var response: ListingResponse? = null
 
     /**
      * Method to get the list
      */
-    fun getList(): RepoResult<List<FactsListItem>> {
+    fun getList(): RepoResult<ListingResponse> {
+
+        val liveData = MutableLiveData<Resource<ListingResponse>>()
+        liveData.postValue(Resource.loading())
+
+        if(job.isCompleted || job.isCancelled){
+            job = Job()
+        }
+
+
 
         // Fetch the data.
         val result = FactsApi.getFactsListing()
@@ -28,10 +43,12 @@ object RepoFactsListing {
 
             is Success -> {
 
-                result.contents.data.rows.let {
+                result.contents.let {
 
-                    items.addAll(it)
-                    RepoResult(contents = it.asList())
+                    //items.addAll(it)
+                    items.addAll(it.rows)
+                    response = result.contents
+                    RepoResult(contents = it)
                 }
 
             }
@@ -42,5 +59,14 @@ object RepoFactsListing {
 
         }
 
+    }
+
+    fun getAll(): List<FactsListItem> = items
+
+    /**
+     * Method to clear all items in the list
+     */
+    fun clearAll() {
+        items.clear()
     }
 }

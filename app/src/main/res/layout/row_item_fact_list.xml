@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="factItem"
+            type="com.niv.factsapp.models.FactsListItem" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_row_item"
+        android:orientation="vertical"
+        android:padding="@dimen/item_layout_margin">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_fact_title"
+            style="@style/TitleTextStyle"
+            android:layout_alignParentTop="true"
+            android:text="@{factItem.title}"
+            tools:text="Hockey Night in Canada" />
+
+        <LinearLayout
+            android:id="@+id/layout_fact_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_fact_title"
+            android:layout_marginTop="@dimen/item_layout_margin"
+            android:layout_toStartOf="@+id/img_right_arrow"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fact_description"
+                style="@style/DescriptionTextStyle"
+                android:layout_width="0dp"
+                android:layout_weight=".6"
+                android:text="@{factItem.description}"
+                tools:text="These Saturday night CBC broadcasts originally aired on radio in 1931. In 1952 they debuted on television and continue to unite (and divide) the nation each week." />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_fact_logo"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_weight=".4"
+                android:padding="@dimen/item_layout_padding"
+                android:src="@drawable/ic_placeholder"
+                app:imageUrl="@{factItem.imageHref}" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_right_black" />
+
+    </RelativeLayout>
+</layout>
