@@ -12,14 +12,20 @@ import com.niv.factsapp.R
  * @since 2020-03-28.
  */
 object BindingUtils {
-
+    
+    /**
+     * Method to load the image in the image view using glide
+     *
+     * @param imageView image view to which the image has to be laoded
+     * @param url url of the image
+     */
     @BindingAdapter("imageUrl")
     @JvmStatic
     fun setImageUrl(imageView: ImageView, url: String?) {
         Glide.with(imageView.context)
             .load(url)
-            .placeholder(R.drawable.ic_placeholder)
-            .error(R.drawable.ic_globe)
+            .placeholder(R.drawable.ic_globe)
+            .error(R.drawable.ic_placeholder)
             .into(imageView)
     }
 }
