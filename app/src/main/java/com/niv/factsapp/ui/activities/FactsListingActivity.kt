@@ -92,7 +92,9 @@ class FactsListingActivity : AppCompatActivity() {
 
         rv_facts_list.apply {
             layoutManager = LinearLayoutManager(this@FactsListingActivity)
-            adapter = list?.let { FactsListAdapter(context, it) }
+            adapter = list?.filter { item ->
+                item?.title != null || item?.description != null || item?.imageHref != null
+            }.let { FactsListAdapter(context, it as List<FactsListItem>) }
         }
     }
 
