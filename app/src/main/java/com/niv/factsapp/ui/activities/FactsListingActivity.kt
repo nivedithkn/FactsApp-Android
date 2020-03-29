@@ -139,6 +139,9 @@ class FactsListingActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         toolbar.title = factsListingViewModel.title
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar.setTitleTextColor(
             ContextCompat.getColor(
                 this@FactsListingActivity,
