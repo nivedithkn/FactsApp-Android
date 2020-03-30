@@ -109,27 +109,39 @@ class FactsListingActivity : AppCompatActivity() {
             Status.SUCCESS -> {
                 progress_bar.visibility = View.GONE
                 layout_swipe.isRefreshing = false
+                tv_no_data.visibility = View.GONE
+                rv_facts_list.visibility = View.VISIBLE
             }
             Status.EMPTY_RESPONSE -> {
                 progress_bar.visibility = View.GONE
                 layout_swipe.isRefreshing = false
+                tv_no_data.visibility = View.VISIBLE
+                rv_facts_list.visibility = View.GONE
             }
             Status.PROGRESSING -> {
                 progress_bar.visibility = View.VISIBLE
+                tv_no_data.visibility = View.GONE
+                rv_facts_list.visibility = View.VISIBLE
             }
             Status.SWIPE_RELOADING -> {
                 progress_bar.visibility = View.GONE
                 layout_swipe.isRefreshing = true
+                tv_no_data.visibility = View.GONE
+                rv_facts_list.visibility = View.VISIBLE
             }
             Status.ERROR -> {
 
                 Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
                 progress_bar.visibility = View.GONE
                 layout_swipe.isRefreshing = false
+                tv_no_data.visibility = View.VISIBLE
+                rv_facts_list.visibility = View.GONE
             }
             Status.LOADING_MORE -> {
                 progress_bar.visibility = View.VISIBLE
                 layout_swipe.isRefreshing = false
+                tv_no_data.visibility = View.GONE
+                rv_facts_list.visibility = View.VISIBLE
             }
         }
     }
