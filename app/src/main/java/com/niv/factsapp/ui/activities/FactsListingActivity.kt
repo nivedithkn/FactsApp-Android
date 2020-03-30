@@ -1,5 +1,6 @@
 package com.niv.factsapp.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.niv.factsapp.models.ListingResponse
 import com.niv.factsapp.repository.Resource
 import com.niv.factsapp.repository.Status
 import com.niv.factsapp.ui.adapters.FactsListAdapter
+import com.niv.factsapp.utils.NetworkUtils
 import com.niv.factsapp.viewmodels.FactsListingViewModel
 import kotlinx.android.synthetic.main.activity_facts_list.*
 
@@ -30,6 +32,8 @@ class FactsListingActivity : AppCompatActivity() {
 
     private lateinit var factsListingViewModel: FactsListingViewModel
 
+    private lateinit var mContext: Context
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,13 +46,29 @@ class FactsListingActivity : AppCompatActivity() {
     private fun initView() {
         val binding: ActivityFactsListBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_facts_list)
+        mContext = this@FactsListingActivity
 
         factsListingViewModel = ViewModelProviders.of(this).get(FactsListingViewModel::class.java)
-        factsListingViewModel.loadPage().observeList()
-
+        loadFacts()
         binding.viewmodel = factsListingViewModel
 
         setUiListeners()
+    }
+
+    /**
+     * Method to load facts from api
+     */
+    private fun loadFacts() {
+        if (NetworkUtils.isNetworkConnected(context = mContext))
+            factsListingViewModel.loadPage().observeList()
+        else {
+            NetworkUtils.showErrorSnackBarOnNetworkFailure(
+                context =
+                mContext, view = layout_root
+            )
+
+            handleVisibilityIfNoInternet()
+        }
     }
 
     /**
@@ -59,7 +79,8 @@ class FactsListingActivity : AppCompatActivity() {
         // siwpe listener for swipe refresh layout
         layout_swipe.setOnRefreshListener {
             layout_swipe.isRefreshing = true
-            factsListingViewModel.loadPage().observeList()
+
+            loadFacts()
         }
     }
 
@@ -162,5 +183,15 @@ class FactsListingActivity : AppCompatActivity() {
                 R.color.colorWhite
             )
         )
+    }
+
+    /**
+     * Method to handle the visibility of UI items if there is no internet
+     */
+    private fun handleVisibilityIfNoInternet() {
+        progress_bar.visibility = View.GONE
+        layout_swipe.isRefreshing = false
+        tv_no_data.visibility = View.VISIBLE
+        rv_facts_list.visibility = View.GONE
     }
 }
