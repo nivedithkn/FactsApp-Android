@@ -12,7 +12,7 @@ import com.niv.factsapp.R
  * @since 2020-03-28.
  */
 object BindingUtils {
-    
+
     /**
      * Method to load the image in the image view using glide
      *

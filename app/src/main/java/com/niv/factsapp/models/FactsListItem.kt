@@ -12,4 +12,4 @@ data class FactsListItem(
     val title: String?,
     val description: String?,
     val imageHref: String?
-): BaseObservable()
+) : BaseObservable()

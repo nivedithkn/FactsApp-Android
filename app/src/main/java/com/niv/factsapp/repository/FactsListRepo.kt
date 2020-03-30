@@ -1,6 +1,5 @@
 package com.niv.factsapp.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.niv.factsapp.models.FactsListItem
 import com.niv.factsapp.models.Failure
 import com.niv.factsapp.models.ListingResponse
@@ -27,13 +26,9 @@ object RepoFactsListing {
      */
     fun getList(): RepoResult<ListingResponse> {
 
-        val liveData = MutableLiveData<Resource<ListingResponse>>()
-        liveData.postValue(Resource.loading())
-
-        if(job.isCompleted || job.isCancelled){
+        if (job.isCompleted || job.isCancelled) {
             job = Job()
         }
-
 
 
         // Fetch the data.

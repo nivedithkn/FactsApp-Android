@@ -29,7 +29,7 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
     }
 }
 
-enum class Status{
+enum class Status {
     EMPTY_RESPONSE,
     PROGRESSING,
     LOADING_MORE,
